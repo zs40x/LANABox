@@ -62,6 +62,8 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       print("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3]))
 
+      # ToDo: Call change_playlist.sh with the spotify playlist as attribute (i.e. spotify:album:1KGhKPtt7YrG8Eu0oQomp0)
+
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
         subp = subprocess.Popen('/home/pi/play_track.sh', shell=True)
         subp.communicate()
