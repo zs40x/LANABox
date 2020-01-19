@@ -59,7 +59,7 @@ while continue_reading:
       print(trackid)
 
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
-        subp = Popen([baseDir + "/change_playlist.sh", trackid], shell=True)
+        subp = Popen(baseDir + "/change_playlist.sh " + trackid, shell=True)
         subp.communicate()
   else:
     time.sleep(0.5)
