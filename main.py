@@ -53,8 +53,12 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       print("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3]))
 
+      file = open("cardmappings.csv", "r") 
+      trackid = file.readline() 
+      print(trackid)
+      
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
-        subp = Popen(["change_playlist.sh", "spotify:album:1KGhKPtt7YrG8Eu0oQomp0"], shell=True, stdout=PIPE)
+        subp = Popen(["change_playlist.sh", trackid], shell=True, stdout=PIPE)
         subp.communicate()
   else:
     time.sleep(0.5)
