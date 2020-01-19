@@ -64,6 +64,7 @@ while continue_reading:
       print("Card read UID: " + cardId)
      
       cardMappings = readCardMappings()
+      trackid = cardMappings[cardId]
 
       if cardId in cardMappings:
         trackid = cardMappings[0]
