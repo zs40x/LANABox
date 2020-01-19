@@ -29,7 +29,7 @@ def readCardMappings():
 
 def appendNewCardIdToMappings(cardId):
   with open(baseDir + "/cardmappings.csv", "a") as f:
-    f.write(cardId + ";")
+    f.write(cardId + ";\n")
 
 print("LANABox controller is running")
 print("Press Ctrl-C to stop.")
