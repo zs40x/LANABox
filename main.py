@@ -62,12 +62,14 @@ while continue_reading:
       cardId = str(uid[0]) + ":" + str(uid[1]) + ":" + str(uid[2]) + ":" + str(uid[3])
       
       print("Card read UID: " + cardId)
-
+     
       cardMappings = readCardMappings()
-      trackid = cardMappings[0].val
 
-      if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
+      if cardId in cardMappings:
+        trackid = cardMappings[0]
         subp = Popen(baseDir + "/change_playlist.sh "+ trackid, shell=True)
         subp.communicate()
+      else:
+        print("No mapping for the card")
   else:
     time.sleep(0.5)
