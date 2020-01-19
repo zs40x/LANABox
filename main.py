@@ -38,6 +38,7 @@ GPIO.setup(stop_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(next_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 last_stop_button_state = GPIO.input(stop_button_pin)
+last_next_button_state = GPIO.input(next_button_pin)
 
 while continue_reading:
 
@@ -48,9 +49,10 @@ while continue_reading:
     subp = Popen(baseDir + "/toggle_playpause.sh", shell=True)
     subp.communicate()
        
-  button_state = GPIO.input(next_button_pin)
-  if button_state == False:
+  current_state = GPIO.input(next_button_pin)
+  if current_state == False:
     print("Next Track button pressed")
+    last_next_button_state = current_state
     subp = Popen(baseDir + "/next_track.sh", shell=True)
     subp.communicate()
 
