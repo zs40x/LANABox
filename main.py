@@ -7,16 +7,16 @@ import signal
 from subprocess import Popen, PIPE
 import time
 
-stop_button_pin = 40
-next_button_pin = 38
-continue_reading = True
+stopButtonPin = 40
+nextButtonState = 38
+continueReading = True
 baseDir = "/home/pi/LANABox"
 
 # Capture SIGINT for cleanup when the script is aborted
 def shutdown(signal,frame):
-    global continue_reading
+    global continueReading
     print("Ctrl+C captured, ending read.")
-    continue_reading = False
+    continueReading = False
     GPIO.cleanup()
 
 def readCardMappings():
@@ -34,28 +34,28 @@ signal.signal(signal.SIGINT, shutdown)
 MIFAREReader = MFRC522.MFRC522()
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(stop_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(next_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(stopButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(nextButtonState, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 lastCardId = ""
-last_stop_button_state = GPIO.input(stop_button_pin)
-last_next_button_state = GPIO.input(next_button_pin)
+lastStopButtonState = GPIO.input(stopButtonPin)
+lastNextButtonState = GPIO.input(nextButtonState)
 
-while continue_reading:
+while continueReading:
 
   time.sleep(0.5)
 
-  current_state = GPIO.input(stop_button_pin)
-  if current_state != last_stop_button_state:
+  current_state = GPIO.input(stopButtonPin)
+  if current_state != lastStopButtonState:
     print("Stop Playback button pressed")
-    last_stop_button_state = current_state
+    lastStopButtonState = current_state
     subp = Popen(baseDir + "/toggle_playpause.sh", shell=True)
     subp.communicate()
        
-  current_state = GPIO.input(next_button_pin)
-  if current_state != last_next_button_state:
+  current_state = GPIO.input(nextButtonState)
+  if current_state != lastNextButtonState:
     print("Next Track button pressed")
-    last_next_button_state = current_state
+    lastNextButtonState = current_state
     subp = Popen(baseDir + "/next_track.sh", shell=True)
     subp.communicate()
 
