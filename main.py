@@ -50,7 +50,7 @@ while continue_reading:
     subp.communicate()
        
   current_state = GPIO.input(next_button_pin)
-  if current_state == False:
+  if current_state != last_next_button_state:
     print("Next Track button pressed")
     last_next_button_state = current_state
     subp = Popen(baseDir + "/next_track.sh", shell=True)
