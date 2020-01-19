@@ -81,7 +81,7 @@ while continueReading:
       cardMappings = readCardMappings()
       
       if cardId in cardMappings:
-        trackId = cardMappings[cardId]
+        trackId = cardMappings[cardId].strip()
         if len(trackId) > 1:
           subp = Popen(baseDir + "/change_playlist.sh "+ trackId, shell=True)
           subp.communicate()
