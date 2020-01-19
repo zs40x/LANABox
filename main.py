@@ -4,7 +4,7 @@
 import RPi.GPIO as GPIO
 import MFRC522
 import signal
-import subprocess
+from subprocess import Popen, PIPE
 import time
 
 gpio_piezzo_pin = 13
@@ -42,13 +42,13 @@ while continue_reading:
   button_state = GPIO.input(stop_button_pin)
   if button_state == False:
     print("Stop Playback button pressed")
-    subp = subprocess.Popen('/home/pi/toggle_playback.sh', shell=True)
+    subp = Popen('/home/pi/toggle_playback.sh', shell=True)
     subp.communicate()
        
   button_state = GPIO.input(next_button_pin)
   if button_state == False:
     print("Next Track button pressed")
-    subp = subprocess.Popen('/home/pi/next_track.sh', shell=True)
+    subp = Popen('/home/pi/next_track.sh', shell=True)
     subp.communicate()
 
   (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
@@ -62,13 +62,11 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       print("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3]))
 
-      # ToDo: Call change_playlist.sh with the spotify playlist as attribute (i.e. spotify:album:1KGhKPtt7YrG8Eu0oQomp0)
-
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
-        subp = subprocess.Popen('/home/pi/play_track.sh', shell=True)
+        subp = Popen(["change_playlist.sh", "spotify:album:1KGhKPtt7YrG8Eu0oQomp0"], shell=True, stdout=PIPE)
         subp.communicate()
       elif uid[0] == 55 and uid[1] == 140 and uid[2] == 36 and uid[3] == 217:
-        subp = subprocess.Popen('/home/pi/stop_playback.sh', shell=True)
+        subp = Popen('/home/pi/stop_playback.sh', shell=True)
         subp.communicate()
   else:
     time.sleep(0.5)
