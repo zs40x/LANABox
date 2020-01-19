@@ -19,6 +19,13 @@ def shutdown(signal,frame):
     continue_reading = False
     GPIO.cleanup()
 
+def readCardMappings():
+  d = {}
+  with open(baseDir + "/cardmappings.csv", "r") as f:
+    for line in f:
+       (key, val) = line.split(";")
+       d[key] = val
+  return d
 
 print("Musicbox controller is running")
 print("Press Ctrl-C to stop.")
@@ -52,11 +59,15 @@ while continue_reading:
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
 
     if status == MIFAREReader.MI_OK:
-      print("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3]))
+      cardId = str(uid[0]) + ":" + str(uid[1]) + ":" + str(uid[2]) + ":" + str(uid[3])
+      
+      print("Card read UID: " + cardId)
 
       file = open(baseDir + "/cardmappings.csv", "r") 
-      trackid = file.readline() 
-      print(trackid)
+      trackid = file.readline()     
+      
+      cardMappings = readCardMappings()
+      trackid = cardMappings[0].val
 
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
         subp = Popen(baseDir + "/change_playlist.sh "+ trackid, shell=True)
