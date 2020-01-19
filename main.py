@@ -37,11 +37,14 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(stop_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(next_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+last_stop_button_state = GPIO.input(stop_button_pin)
+
 while continue_reading:
 
-  button_state = GPIO.input(stop_button_pin)
-  if button_state == False:
+  current_state = GPIO.input(stop_button_pin)
+  if current_state != last_stop_button_state:
     print("Stop Playback button pressed")
+    last_stop_button_state = current_state
     subp = Popen(baseDir + "/toggle_playpause.sh", shell=True)
     subp.communicate()
        
