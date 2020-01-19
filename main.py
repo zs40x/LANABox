@@ -24,13 +24,13 @@ def readCardMappings():
   d = {}
   with open(cardMappingsFile, "r") as f:
     for line in f:
-       (key, val) = line.split(";")
+       (key, val) = line.split(",")
        d[key] = val
   return d
 
 def appendNewCardIdToMappings(cardId):
   with open(cardMappingsFile, "a") as f:
-    f.write(cardId + ";\n")
+    f.write(cardId + ",\n")
 
 print("LANABox controller is running")
 print("Press Ctrl-C to stop.")
