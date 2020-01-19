@@ -10,6 +10,7 @@ import time
 stop_button_pin = 40
 next_button_pin = 38
 continue_reading = True
+baseDir = "/home/pi/LANABox"
 
 # Capture SIGINT for cleanup when the script is aborted
 def shutdown(signal,frame):
@@ -34,13 +35,13 @@ while continue_reading:
   button_state = GPIO.input(stop_button_pin)
   if button_state == False:
     print("Stop Playback button pressed")
-    subp = Popen("toggle_playpause.sh", shell=True, stdout=PIPE)
+    subp = Popen(baseDir + "/toggle_playpause.sh", shell=True, stdout=PIPE)
     subp.communicate()
        
   button_state = GPIO.input(next_button_pin)
   if button_state == False:
     print("Next Track button pressed")
-    subp = Popen("next_track.sh", shell=True, stdout=PIPE)
+    subp = Popen(baseDir + "/next_track.sh", shell=True, stdout=PIPE)
     subp.communicate()
 
   (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
@@ -53,12 +54,12 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       print("Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3]))
 
-      file = open("cardmappings.csv", "r") 
+      file = open(baseDir + "/cardmappings.csv", "r") 
       trackid = file.readline() 
       print(trackid)
-      
+
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
-        subp = Popen(["change_playlist.sh", trackid], shell=True, stdout=PIPE)
+        subp = Popen([baseDir + "/change_playlist.sh", trackid], shell=True, stdout=PIPE)
         subp.communicate()
   else:
     time.sleep(0.5)
