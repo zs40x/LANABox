@@ -62,8 +62,7 @@ while continue_reading:
   (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
   if status == MIFAREReader.MI_OK:
-    print("Card detected")
-    
+   
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
 
     if status == MIFAREReader.MI_OK:
