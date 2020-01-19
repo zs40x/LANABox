@@ -27,6 +27,10 @@ def readCardMappings():
        d[key] = val
   return d
 
+def appendNewCardIdToMappings(cardId):
+  with open(baseDir + "/cardmappings.csv", "a") as f:
+    f.write(cardId + ";")
+
 print("LANABox controller is running")
 print("Press Ctrl-C to stop.")
 
@@ -83,6 +87,7 @@ while continueReading:
         else:
           print("Cannot play initial trackId for card " + cardId)
       else:
-        print("No mapping for the card")
+        print("No mapping for the card, appendig it to the mappings file")
+        appendNewCardIdToMappings(cardId)
   
     
