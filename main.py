@@ -35,13 +35,13 @@ while continue_reading:
   button_state = GPIO.input(stop_button_pin)
   if button_state == False:
     print("Stop Playback button pressed")
-    subp = Popen(baseDir + "/toggle_playpause.sh", shell=True, stdout=PIPE)
+    subp = Popen(baseDir + "/toggle_playpause.sh", shell=True)
     subp.communicate()
        
   button_state = GPIO.input(next_button_pin)
   if button_state == False:
     print("Next Track button pressed")
-    subp = Popen(baseDir + "/next_track.sh", shell=True, stdout=PIPE)
+    subp = Popen(baseDir + "/next_track.sh", shell=True)
     subp.communicate()
 
   (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
@@ -59,7 +59,7 @@ while continue_reading:
       print(trackid)
 
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
-        subp = Popen([baseDir + "/change_playlist.sh", trackid], shell=True, stdout=PIPE)
+        subp = Popen([baseDir + "/change_playlist.sh", trackid], shell=True)
         subp.communicate()
   else:
     time.sleep(0.5)
