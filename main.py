@@ -64,10 +64,9 @@ while continue_reading:
       print("Card read UID: " + cardId)
      
       cardMappings = readCardMappings()
-      trackid = cardMappings[cardId]
-
+      
       if cardId in cardMappings:
-        trackid = cardMappings[0]
+        trackid = cardMappings[cardId]
         subp = Popen(baseDir + "/change_playlist.sh "+ trackid, shell=True)
         subp.communicate()
       else:
