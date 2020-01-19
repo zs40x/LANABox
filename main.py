@@ -81,7 +81,7 @@ while continueReading:
       
       if cardId in cardMappings:
         trackId = cardMappings[cardId]
-        if len(trackId) > 0:
+        if len(trackId) > 1:
           subp = Popen(baseDir + "/change_playlist.sh "+ trackId, shell=True)
           subp.communicate()
         else:
