@@ -7,7 +7,6 @@ import signal
 from subprocess import Popen, PIPE
 import time
 
-gpio_piezzo_pin = 13
 stop_button_pin = 40
 next_button_pin = 38
 continue_reading = True
@@ -19,10 +18,6 @@ def shutdown(signal,frame):
     continue_reading = False
     GPIO.cleanup()
 
-def beep ():
-  GPIO.output(gpio_piezzo_pin,GPIO.HIGH)
-  time.sleep(0.2)
-  GPIO.output(gpio_piezzo_pin,GPIO.LOW)
 
 print("Musicbox controller is running")
 print("Press Ctrl-C to stop.")
@@ -31,11 +26,8 @@ signal.signal(signal.SIGINT, shutdown)
 MIFAREReader = MFRC522.MFRC522()
 
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(gpio_piezzo_pin, GPIO.IN)
-GPIO.setup(gpio_piezzo_pin, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(stop_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(next_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.output(gpio_piezzo_pin,GPIO.LOW)
 
 while continue_reading:
 
@@ -55,7 +47,6 @@ while continue_reading:
 
   if status == MIFAREReader.MI_OK:
     print("Card detected")
-    beep()
     
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
 
