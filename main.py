@@ -69,11 +69,11 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       cardId = str(uid[0]) + ":" + str(uid[1]) + ":" + str(uid[2]) + ":" + str(uid[3])
       
-      if cardId != lastCardId:
+      if cardId == lastCardId:
         continue
 
       print("Card read UID: " + cardId)
-     
+      lastCardId = cardId
       cardMappings = readCardMappings()
       
       if cardId in cardMappings:
