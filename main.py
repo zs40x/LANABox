@@ -63,9 +63,6 @@ while continue_reading:
       
       print("Card read UID: " + cardId)
 
-      file = open(baseDir + "/cardmappings.csv", "r") 
-      trackid = file.readline()     
-      
       cardMappings = readCardMappings()
       trackid = cardMappings[0].val
 
