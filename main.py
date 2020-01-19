@@ -11,6 +11,7 @@ stopButtonPin = 40
 nextButtonState = 38
 continueReading = True
 baseDir = "/home/pi/LANABox"
+cardMappingsFile = "/home/pi/LANABoxMappings/cardmappings.csv"
 
 # Capture SIGINT for cleanup when the script is aborted
 def shutdown(signal,frame):
@@ -21,14 +22,14 @@ def shutdown(signal,frame):
 
 def readCardMappings():
   d = {}
-  with open(baseDir + "/cardmappings.csv", "r") as f:
+  with open(cardMappingsFile, "r") as f:
     for line in f:
        (key, val) = line.split(";")
        d[key] = val
   return d
 
 def appendNewCardIdToMappings(cardId):
-  with open(baseDir + "/cardmappings.csv", "a") as f:
+  with open(cardMappingsFile, "a") as f:
     f.write(cardId + ";\n")
 
 print("LANABox controller is running")
