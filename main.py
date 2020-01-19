@@ -37,10 +37,13 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(stop_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(next_button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+lastCardId = ""
 last_stop_button_state = GPIO.input(stop_button_pin)
 last_next_button_state = GPIO.input(next_button_pin)
 
 while continue_reading:
+
+  time.sleep(0.5)
 
   current_state = GPIO.input(stop_button_pin)
   if current_state != last_stop_button_state:
@@ -66,6 +69,9 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
       cardId = str(uid[0]) + ":" + str(uid[1]) + ":" + str(uid[2]) + ":" + str(uid[3])
       
+      if cardId != lastCardId:
+        continue
+
       print("Card read UID: " + cardId)
      
       cardMappings = readCardMappings()
@@ -76,5 +82,5 @@ while continue_reading:
         subp.communicate()
       else:
         print("No mapping for the card")
-  else:
-    time.sleep(0.5)
+  
+    
