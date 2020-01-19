@@ -27,7 +27,7 @@ def readCardMappings():
        d[key] = val
   return d
 
-print("Musicbox controller is running")
+print("LANABox controller is running")
 print("Press Ctrl-C to stop.")
 
 signal.signal(signal.SIGINT, shutdown)
