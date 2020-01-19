@@ -76,9 +76,12 @@ while continueReading:
       cardMappings = readCardMappings()
       
       if cardId in cardMappings:
-        trackid = cardMappings[cardId]
-        subp = Popen(baseDir + "/change_playlist.sh "+ trackid, shell=True)
-        subp.communicate()
+        trackId = cardMappings[cardId]
+        if len(trackId) > 0:
+          subp = Popen(baseDir + "/change_playlist.sh "+ trackId, shell=True)
+          subp.communicate()
+        else:
+          print("Cannot play initial trackId for card " + cardId)
       else:
         print("No mapping for the card")
   
