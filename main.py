@@ -67,7 +67,7 @@ while continue_reading:
       trackid = file.readline()     
       
       cardMappings = readCardMappings()
-      trackid = cardMappings[0].val
+      trackid = cardMappings[cardId]
 
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
         subp = Popen(baseDir + "/change_playlist.sh "+ trackid, shell=True)
