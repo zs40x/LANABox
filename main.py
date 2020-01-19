@@ -65,8 +65,5 @@ while continue_reading:
       if uid[0] == 49 and uid[1] == 182 and uid[2] == 230 and uid[3] == 43:
         subp = Popen(["change_playlist.sh", "spotify:album:1KGhKPtt7YrG8Eu0oQomp0"], shell=True, stdout=PIPE)
         subp.communicate()
-      elif uid[0] == 55 and uid[1] == 140 and uid[2] == 36 and uid[3] == 217:
-        subp = Popen('/home/pi/stop_playback.sh', shell=True)
-        subp.communicate()
   else:
     time.sleep(0.5)
