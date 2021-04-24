@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 import RPi.GPIO as GPIO
-import MFRC522
+import mfrc522
 import signal
 from subprocess import Popen, PIPE
 import time
@@ -12,6 +12,7 @@ nextButtonState = 38
 continueReading = True
 baseDir = "/home/pi/LANABox"
 cardMappingsFile = "/home/pi/LANABoxMappings/cardmappings.csv"
+isPlaying = False
 
 # Capture SIGINT for cleanup when the script is aborted
 def shutdown(signal,frame):
@@ -36,7 +37,7 @@ print("LANABox controller is running")
 print("Press Ctrl-C to stop.")
 
 signal.signal(signal.SIGINT, shutdown)
-MIFAREReader = MFRC522.MFRC522()
+MIFAREReader = mfrc522.MFRC522()
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(stopButtonPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -67,13 +68,18 @@ while continueReading:
   (status,TagType) = MIFAREReader.MFRC522_Request(MIFAREReader.PICC_REQIDL)
 
   if status == MIFAREReader.MI_OK:
-   
     (status,uid) = MIFAREReader.MFRC522_Anticoll()
 
     if status == MIFAREReader.MI_OK:
       cardId = str(uid[0]) + ":" + str(uid[1]) + ":" + str(uid[2]) + ":" + str(uid[3])
-      
-      if cardId == lastCardId:
+
+      if (cardId == "55:140:36:217" and isPlaying) or (cardId == lastCardId and not isPlaying):
+        print("Toggle Playback")
+        subp = Popen(baseDir + "/toggle_playpause.sh", shell=True)
+        time.sleep(2)
+        isPlaying = not isPlaying
+        continue
+      elif cardId == lastCardId or cardId == "55:140:36:217":
         continue
 
       print("Card read UID: " + cardId)
@@ -85,6 +91,7 @@ while continueReading:
         if len(trackId) > 1:
           subp = Popen(baseDir + "/change_playlist.sh "+ trackId, shell=True)
           subp.communicate()
+          isPlaying = True
         else:
           print("Cannot play initial trackId for card " + cardId)
       else:

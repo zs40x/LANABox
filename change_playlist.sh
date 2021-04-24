@@ -8,4 +8,8 @@ mpc add $1
 mpc play
 
 sleep 2
-mpc status | mail -s "LANABox Activity" "StefanMehnert+LANABox@gmail.com"
+mpc status > /home/pi/mpc_status
+python display_track.py
+
+mpc status
+# | mail -s "LANABox Activity" "StefanMehnert+LANABox@gmail.com"
